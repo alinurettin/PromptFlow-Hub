@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptFlow-Hub | AI Prompt Engineering & Token Cost Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22><text y=%2222%22 font-size=%2220%22>✨</text></svg>">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon">✨</span>
+      <div>
+        <h1>PromptFlow-Hub</h1>
+        <span class="brand-sub">AI Prompt Version Control, Token Estimation & Cost Benchmarking</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn primary" id="btnNewPrompt">➕ New Prompt</button>
+    </div>
+  </header>
+
+  <div class="workspace-layout">
+    <!-- Sidebar: Prompts List -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>Saved Prompts</h3>
+      </div>
+      <div class="prompt-list" id="promptList"></div>
+    </aside>
+
+    <!-- Main Studio Content -->
+    <main class="studio-main">
+      <!-- Top Title & Version Bar -->
+      <div class="prompt-topbar">
+        <div>
+          <h2 id="currentPromptTitle">Select a prompt from sidebar</h2>
+          <span class="prompt-desc" id="currentPromptDesc"></span>
+        </div>
+        <div class="version-selector-container">
+          <label>Version:</label>
+          <select id="selectVersion" class="version-select"></select>
+          <button class="btn secondary" id="btnSaveNewVersion">💾 Save as New Version</button>
+        </div>
+      </div>
+
+      <!-- Live Token & Cost Metric Strip -->
+      <div class="cost-grid" id="costGrid">
+        <div class="cost-card">
+          <span class="cost-lbl">CHARS / WORDS</span>
+          <span class="cost-val" id="valCharsWords">0 / 0</span>
+        </div>
+        <div class="cost-card gemini">
+          <span class="cost-lbl">GEMINI 2.0 FLASH</span>
+          <span class="cost-val" id="valGeminiTokens">0 tkn</span>
+          <span class="cost-sub" id="valGeminiCost">$0.00 / 1K calls</span>
+        </div>
+        <div class="cost-card openai">
+          <span class="cost-lbl">OPENAI GPT-4o</span>
+          <span class="cost-val" id="valGptTokens">0 tkn</span>
+          <span class="cost-sub" id="valGptCost">$0.00 / 1K calls</span>
+        </div>
+        <div class="cost-card claude">
+          <span class="cost-lbl">CLAUDE 3.5 SONNET</span>
+          <span class="cost-val" id="valClaudeTokens">0 tkn</span>
+          <span class="cost-sub" id="valClaudeCost">$0.00 / 1K calls</span>
+        </div>
+      </div>
+
+      <!-- Editor & Variable Inspector -->
+      <div class="editor-container">
+        <textarea id="promptEditor" class="prompt-textarea" placeholder="Write your system prompt or instruction here. Use {{variable_name}} for dynamic tags..."></textarea>
+      </div>
+
+      <!-- Detected Variables Bar -->
+      <div class="variables-bar" id="variablesBar">
+        <span class="var-title">Template Variables:</span>
+        <div class="var-pills" id="varPills"></div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <p>PromptFlow-Hub v1.0.0 &bull; Built autonomously by the 7-Agent SDLC Team &bull; <a href="https://github.com/alinurettin/PromptFlow-Hub" target="_blank">GitHub Repository</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "promptflow-hub",
+  "version": "1.0.0",
+  "description": "Version-controlled AI prompt engineering, token cost estimation and A/B benchmarking studio",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node tests/run_tests.js"
+  },
+  "keywords": [
+    "prompt-engineering",
+    "llm",
+    "token-calculator",
+    "ai-studio",
+    "gemini",
+    "gpt-4o",
+    "claude",
+    "version-control"
+  ],
+  "author": "Ali Nurettin Demir",
+  "license": "MIT"
+}
