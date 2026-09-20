@@ -31,9 +31,9 @@ Analyze the following code for:
 2. Security vulnerabilities (OWASP Top 10)
 3. Idiomatic design patterns
 Code to review:
-\`\`\`{{language}}
+`\``{{language}}
 {{source_code}}
-\`\`\``
+`\```
     });
   }
 
