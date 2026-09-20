@@ -1,48 +1,42 @@
-# 📊 Product Requirements Document (PRD): PromptFlow-Hub
-
-- **Project:** PromptFlow-Hub
-- **Author:** Expert Business Analyst
-- **Status:** APPROVED & COMPLETE
-- **Version:** 1.0.0
+# 📋 Product Requirements Document (PRD): PromptFlow-Hub v2.0.0
+- **Document Status:** APPROVED
+- **Owner:** Principal Product Manager & LLMOps Architect
+- **Target Release:** v2.0.0
+- **Date:** 2026-09-20
 
 ---
 
 ## 1. Product Vision & Goals
 
-Equip AI developers with a friction-free studio to create, version-control, template-interpolate, and estimate financial costs of LLM prompts in real-time.
+PromptFlow-Hub v2.0.0 is an enterprise-grade LLM Prompt Version Control and Token Economics Studio. It empowers AI engineers, prompt designers, and software architects to build, track, version, and financially model system prompts across multi-provider frontier AI models.
+
+### Key Objectives:
+1. **Cryptographic Version Control:** Guarantee immutable version history with SHA-256 commit hashes and rollback capabilities.
+2. **Predictive Token Economics:** Deliver live, multi-model cost calculations for 1K, 100K, and 1M calls alongside context window budget percentages.
+3. **Semantic Variable AST:** Support `{{variable}}` and `{{variable:default}}` syntax with dynamic test rendering and unbound tag preservation.
+4. **Algorithmic Myers LCS Diffing:** Provide mathematical sequence comparison between prompt versions with similarity scoring.
 
 ---
 
-## 2. Functional Requirements & BDD Acceptance Criteria
+## 2. Functional Requirements (FR)
 
-### FR-1: Version-Controlled Prompt Storage
-- **Description:** Store prompt templates with SemVer versioning (e.g., `v1.0.0`, `v1.1.0`), author tags, and changelog notes.
-- **BDD Scenario:**
-  ```gherkin
-  Given a prompt with existing versions
-  When the user saves modifications as a new version
-  Then the previous version is archived in immutable history
-  And a new version node is added with timestamp and diff metrics
-  ```
-
-### FR-2: Real-Time Predictive Token & Cost Estimator
-- **Description:** Instantly calculates estimated tokens and pricing for Gemini 2.0 Flash, GPT-4o, and Claude 3.5 Sonnet.
-- **BDD Scenario:**
-  ```gherkin
-  Given any prompt text input
-  When text is entered or modified
-  Then estimated token count is computed within 5ms
-  And projected cost per 1M queries is displayed for each model tier
-  ```
-
-### FR-3: Template Variable Interpolation
-- **Description:** Recognizes `{{variable_name}}` tags and provides live preview injection.
-
-### FR-4: Side-by-Side Prompt Diff Viewer
-- **Description:** Highlights character and line differences between any two saved versions.
+| Requirement ID | Description | Priority |
+| :--- | :--- | :--- |
+| **FR-01** | Version-controlled prompt repository with immutable semantic versions (`v1.0.0`, `v1.1.0`) and SHA-256 commit hashes. | P0 (Must) |
+| **FR-02** | Semantic template variable extraction supporting default value fallbacks (`{{key:default}}`) and occurrence counting. | P0 (Must) |
+| **FR-03** | Safe template interpolation engine evaluating explicit variables while falling back gracefully to defaults. | P0 (Must) |
+| **FR-04** | Dynamic programming Myers/LCS diff engine computing added, removed, and unchanged lines with similarity score $S \in [0, 1]$. | P0 (Must) |
+| **FR-05** | Real-time multi-model token economics covering Google Gemini, OpenAI GPT-4o, and Anthropic Claude. | P0 (Must) |
+| **FR-06** | Rollback functionality restoring historical prompt versions as new forward immutable versions. | P1 (High) |
+| **FR-07** | RESTful HTTP API surface for programmatic prompt retrieval, version bumping, and economics calculation. | P0 (Must) |
+| **FR-08** | Cyber dark-mode operational dashboard with prompt registry sidebar, live metrics strip, editor, diff viewer, and test render modal. | P1 (High) |
 
 ---
 
-## 3. Non-Functional Requirements
-- **Zero Dependencies:** Pure standard libraries.
-- **Performance:** Instant token calculation under 10ms for 100,000 characters.
+## 3. Non-Functional Requirements (NFR)
+
+- **NFR-01 (Zero External Dependencies):** Powered exclusively by Node.js standard libraries.
+- **NFR-02 (Low Latency):** Sub-5ms response time for token cost estimations and Myers LCS diff calculations.
+- **NFR-03 (Resource Footprint):** Memory footprint under $30\text{MB}$ under active load.
+- **NFR-04 (Air-Gapped Privacy):** 100% local execution ensuring confidential proprietary system prompts never leak to third-party clouds.
+- **NFR-05 (Verification):** 100% non-mocked verification test suite passing 25+ assertions.

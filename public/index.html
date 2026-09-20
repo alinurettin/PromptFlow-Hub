@@ -3,87 +3,151 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PromptFlow-Hub | AI Prompt Engineering & Token Cost Studio</title>
+  <title>PromptFlow-Hub v2.0.0 | AI Prompt Version Control & Token Economics Studio</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22><text y=%2222%22 font-size=%2220%22>✨</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="app-header">
-    <div class="brand">
-      <span class="brand-icon">✨</span>
-      <div>
-        <h1>PromptFlow-Hub</h1>
-        <span class="brand-sub">AI Prompt Version Control, Token Estimation & Cost Benchmarking</span>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon">✨</span>
+        <div class="brand-info">
+          <h1>PromptFlow-Hub <span class="badge version">v2.0.0</span></h1>
+          <p class="subtitle">AI Prompt Version Control &bull; Multi-Model Token Economics &bull; Myers LCS Diff</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" id="btnDiffModal">🔍 Version Diff</button>
+        <button class="btn btn-secondary" id="btnTestRender">🧪 Test Render</button>
+        <button class="btn btn-primary" id="btnNewPrompt">➕ New Prompt</button>
+      </div>
+    </header>
+
+    <div class="workspace-layout">
+      <!-- Sidebar: Prompts List -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h3>PROMPT REGISTRY</h3>
+          <span class="count-badge" id="promptCount">0</span>
+        </div>
+        <div class="prompt-list" id="promptList">
+          <div class="loading-state">Loading prompts...</div>
+        </div>
+      </aside>
+
+      <!-- Main Studio Content -->
+      <main class="studio-main">
+        <!-- Top Title & Version Bar -->
+        <div class="prompt-topbar">
+          <div class="topbar-title-group">
+            <h2 id="currentPromptTitle">Select a prompt from registry</h2>
+            <span class="prompt-desc" id="currentPromptDesc"></span>
+          </div>
+          <div class="version-controls">
+            <div class="version-field">
+              <label>Version:</label>
+              <select id="selectVersion" class="version-select"></select>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btnRollback">↺ Rollback</button>
+            <button class="btn btn-primary btn-sm" id="btnSaveNewVersion">💾 Save New Version</button>
+          </div>
+        </div>
+
+        <!-- Live Token & Cost Metric Strip -->
+        <div class="cost-grid" id="costGrid">
+          <div class="cost-card general">
+            <span class="cost-lbl">CHARS / WORDS</span>
+            <span class="cost-val" id="valCharsWords">0 / 0</span>
+            <span class="cost-sub" id="valLineCount">0 lines</span>
+          </div>
+          <div class="cost-card gemini">
+            <span class="cost-lbl">GEMINI 2.0 FLASH</span>
+            <span class="cost-val" id="valGeminiTokens">0 tkn</span>
+            <span class="cost-sub" id="valGeminiCost">$0.00 / 1K calls</span>
+          </div>
+          <div class="cost-card gemini-pro">
+            <span class="cost-lbl">GEMINI 1.5 PRO</span>
+            <span class="cost-val" id="valGeminiProTokens">0 tkn</span>
+            <span class="cost-sub" id="valGeminiProCost">$0.00 / 1K calls</span>
+          </div>
+          <div class="cost-card openai">
+            <span class="cost-lbl">OPENAI GPT-4o</span>
+            <span class="cost-val" id="valGptTokens">0 tkn</span>
+            <span class="cost-sub" id="valGptCost">$0.00 / 1K calls</span>
+          </div>
+          <div class="cost-card claude">
+            <span class="cost-lbl">CLAUDE 3.5 SONNET</span>
+            <span class="cost-val" id="valClaudeTokens">0 tkn</span>
+            <span class="cost-sub" id="valClaudeCost">$0.00 / 1K calls</span>
+          </div>
+        </div>
+
+        <!-- Editor & Variable Inspector -->
+        <div class="editor-container">
+          <div class="editor-header">
+            <span class="editor-title">Prompt Template Editor</span>
+            <span class="editor-hint">Supports {{var_name}} and {{var_name:default_value}}</span>
+          </div>
+          <textarea id="promptEditor" class="prompt-textarea" placeholder="Write your system prompt or instruction here..."></textarea>
+        </div>
+
+        <!-- Detected Variables Bar -->
+        <div class="variables-bar" id="variablesBar">
+          <span class="var-title">Detected Variables:</span>
+          <div class="var-pills" id="varPills">
+            <span class="empty-hint">No variables detected</span>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Test Render Modal -->
+    <div class="modal-overlay" id="renderModal" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>🧪 Test Prompt Render & Variable Binding</h3>
+          <button class="modal-close" id="btnCloseRenderModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">Provide test input values for the template variables below:</p>
+          <div class="render-inputs-grid" id="renderInputsGrid"></div>
+          <div class="render-preview-box">
+            <h4>Rendered Preview Output</h4>
+            <pre class="rendered-output" id="renderedOutputText"></pre>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" id="btnExecuteRender">Interpolate & Calculate</button>
+        </div>
       </div>
     </div>
-    <div class="header-actions">
-      <button class="btn primary" id="btnNewPrompt">➕ New Prompt</button>
+
+    <!-- Version Diff Modal -->
+    <div class="modal-overlay" id="diffModal" style="display: none;">
+      <div class="modal-card modal-lg">
+        <div class="modal-header">
+          <h3>🔍 Myers LCS Version Diff Comparison</h3>
+          <button class="modal-close" id="btnCloseDiffModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="diff-controls">
+            <label>Compare Current Editor with:</label>
+            <select id="diffCompareTargetSelect" class="version-select"></select>
+            <button class="btn btn-secondary btn-sm" id="btnRunDiff">Run Diff</button>
+          </div>
+          <div class="diff-stats-strip" id="diffStatsStrip"></div>
+          <div class="diff-view" id="diffViewContainer"></div>
+        </div>
+      </div>
     </div>
-  </header>
 
-  <div class="workspace-layout">
-    <!-- Sidebar: Prompts List -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h3>Saved Prompts</h3>
-      </div>
-      <div class="prompt-list" id="promptList"></div>
-    </aside>
-
-    <!-- Main Studio Content -->
-    <main class="studio-main">
-      <!-- Top Title & Version Bar -->
-      <div class="prompt-topbar">
-        <div>
-          <h2 id="currentPromptTitle">Select a prompt from sidebar</h2>
-          <span class="prompt-desc" id="currentPromptDesc"></span>
-        </div>
-        <div class="version-selector-container">
-          <label>Version:</label>
-          <select id="selectVersion" class="version-select"></select>
-          <button class="btn secondary" id="btnSaveNewVersion">💾 Save as New Version</button>
-        </div>
-      </div>
-
-      <!-- Live Token & Cost Metric Strip -->
-      <div class="cost-grid" id="costGrid">
-        <div class="cost-card">
-          <span class="cost-lbl">CHARS / WORDS</span>
-          <span class="cost-val" id="valCharsWords">0 / 0</span>
-        </div>
-        <div class="cost-card gemini">
-          <span class="cost-lbl">GEMINI 2.0 FLASH</span>
-          <span class="cost-val" id="valGeminiTokens">0 tkn</span>
-          <span class="cost-sub" id="valGeminiCost">$0.00 / 1K calls</span>
-        </div>
-        <div class="cost-card openai">
-          <span class="cost-lbl">OPENAI GPT-4o</span>
-          <span class="cost-val" id="valGptTokens">0 tkn</span>
-          <span class="cost-sub" id="valGptCost">$0.00 / 1K calls</span>
-        </div>
-        <div class="cost-card claude">
-          <span class="cost-lbl">CLAUDE 3.5 SONNET</span>
-          <span class="cost-val" id="valClaudeTokens">0 tkn</span>
-          <span class="cost-sub" id="valClaudeCost">$0.00 / 1K calls</span>
-        </div>
-      </div>
-
-      <!-- Editor & Variable Inspector -->
-      <div class="editor-container">
-        <textarea id="promptEditor" class="prompt-textarea" placeholder="Write your system prompt or instruction here. Use {{variable_name}} for dynamic tags..."></textarea>
-      </div>
-
-      <!-- Detected Variables Bar -->
-      <div class="variables-bar" id="variablesBar">
-        <span class="var-title">Template Variables:</span>
-        <div class="var-pills" id="varPills"></div>
-      </div>
-    </main>
+    <footer class="app-footer">
+      <p>PromptFlow-Hub v2.0.0 &bull; Autonomously engineered by 7-Agent SDLC Factory for <a href="https://github.com/alinurettin/PromptFlow-Hub" target="_blank">Ali Nurettin Demir</a></p>
+    </footer>
   </div>
-
-  <footer class="footer">
-    <p>PromptFlow-Hub v1.0.0 &bull; Built autonomously by the 7-Agent SDLC Team &bull; <a href="https://github.com/alinurettin/PromptFlow-Hub" target="_blank">GitHub Repository</a></p>
-  </footer>
 
   <script src="app.js"></script>
 </body>

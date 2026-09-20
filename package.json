@@ -1,7 +1,7 @@
 {
   "name": "promptflow-hub",
-  "version": "1.0.0",
-  "description": "Version-controlled AI prompt engineering, token cost estimation and A/B benchmarking studio",
+  "version": "2.0.0",
+  "description": "Enterprise AI Prompt Version Control, Multi-Model Token Economics, Semantic Variable AST, and Myers LCS Diff Studio",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -15,7 +15,8 @@
     "gemini",
     "gpt-4o",
     "claude",
-    "version-control"
+    "version-control",
+    "myers-diff"
   ],
   "author": "Ali Nurettin Demir",
   "license": "MIT"
